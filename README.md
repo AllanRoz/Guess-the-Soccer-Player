@@ -6,7 +6,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/AllanRoz/guess-the-soccer-player">
-    <img src="public/soccer_icon.png" alt="Logo" width="80" height="80">
+    <img src="public/favicon.ico" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Guess the ⚽ Player</h3>
@@ -361,7 +361,7 @@ Project Link: [https://github.com/AllanRoz/guess-the-soccer-player/](https://git
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/allan-rozario/
 
-[product-screenshot]: public/GuessThePlayer.png
+[product-screenshot]: public/guess_the_soccer_player.png
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://react.dev/
