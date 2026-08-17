@@ -1,4 +1,4 @@
-# Guess the ⚽ Player
+# Guess the Player
 
 <a id="readme-top"></a>
 
@@ -9,7 +9,7 @@
     <img src="public/favicon.ico" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Guess the ⚽ Player</h3>
+  <h3 align="center">Guess the Player</h3>
 
   <p align="center">
     An interactive soccer guessing game that challenges you to identify professional footballers from career clues, statistics, and achievements.
