@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess the ⚽ Player</title>
+    <script>
+      // GitHub Pages SPA fallback: redirect unknown paths back to the app.
+      var path = window.location.pathname;
+      var search = window.location.search;
+      var hash = window.location.hash;
+      // Strip the repo base path so the redirect points at the SPA root.
+      var base = '/Guess-the-Soccer-Player';
+      if (path.indexOf(base) === 0) {
+        path = path.slice(base.length) || '/';
+      }
+      var target = base + (path === '/' ? '/' : path) + (search || '') + (hash || '');
+      window.location.replace(target);
+    </script>
+  </head>
+  <body>
+    <p>Loading Guess the Soccer Player...</p>
+  </body>
+</html>
