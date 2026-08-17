@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import { Trophy, Star, TrendingUp, Calendar, Clock, Target, Award, Crown } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Trophy, Star, TrendingUp, Clock, Target, Award } from 'lucide-react';
 import { StatsCard } from '../components/StatsCard';
 import { AchievementsGrid } from '../components/AchievementsGrid';
 
-export function StatsPage({ state, onNavigate }) {
+export function StatsPage({ state }) {
   const winRate = state.gamesPlayed > 0 
     ? Math.round((state.gamesWon / state.gamesPlayed) * 100) 
     : 0;
@@ -11,12 +12,12 @@ export function StatsPage({ state, onNavigate }) {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-8">
-        <button
-          onClick={() => onNavigate('home')}
-          className="text-stadium-400 hover:text-white transition-colors mb-4 flex items-center gap-2"
+        <Link
+          to="/"
+          className="text-stadium-400 hover:text-white transition-colors mb-4 inline-flex items-center gap-2"
         >
           ← Back to Home
-        </button>
+        </Link>
         <h1 className="text-3xl font-display font-bold text-white">Your Stats</h1>
       </div>
 
@@ -54,14 +55,14 @@ function StatsOverview({ state, winRate }) {
         value={state.bestStreak}
         subtext="Consecutive wins"
       />
-      <div className="glass-card rounded-xl p-4">
+      <div className="glass-card rounded-xl p-4 bg-stadium-900/40">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-gold-500/10 text-gold-400">
             <Trophy size={20} />
           </div>
           <div>
             <p className="text-2xl font-display font-bold text-gold-400">
-              {state.totalScore.toLocaleString()}
+              {state.totalScore?.toLocaleString() || 0}
             </p>
             <p className="text-xs text-stadium-400">Total Score</p>
           </div>

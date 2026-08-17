@@ -1,23 +1,20 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { ModeSelector } from '../components/ModeSelector';
 import { MiniStats } from '../components/Header';
 import PLAYERS from '../data/players';
 import { useDailyPlayer } from '../hooks/useLocalStorage';
 
-export function HomePage({ onNavigate, onModeSelect, state }) {
+export function HomePage({ state }) {
+  const navigate = useNavigate();
   const dailyPlayerId = useDailyPlayer();
   const dailyPlayer = PLAYERS.find(p => p.id === dailyPlayerId) || PLAYERS[0];
 
   const handleModeSelect = (mode) => {
-    onModeSelect(mode);
-    if (mode.page === 'classic') {
-      onNavigate('classic', dailyPlayer);
-    } else if (mode.page === 'multiple-choice') {
-      onNavigate('multiple-choice', dailyPlayer);
-    } else if (mode.page === 'career-path') {
-      onNavigate('career-path', dailyPlayer);
-    } else if (mode.page === 'speed') {
-      onNavigate('speed', PLAYERS.slice(0, 5));
+    if (mode.page === 'daily') {
+      navigate('/play/classic'); // Daily plays classic with the daily player
+    } else {
+      navigate(`/play/${mode.page}`);
     }
   };
 
@@ -27,7 +24,7 @@ export function HomePage({ onNavigate, onModeSelect, state }) {
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="text-8xl mb-4"
+          className="text-8xl mb-4 animate-float"
         >
           ⚽
         </motion.div>
@@ -35,7 +32,7 @@ export function HomePage({ onNavigate, onModeSelect, state }) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="text-5xl md:text-6xl font-display font-bold text-white mb-4"
+          className="text-5xl md:text-6xl font-display font-bold text-white mb-4 tracking-tight"
         >
           GUESS THE <span className="text-pitch-400">PLAYER</span>
         </motion.h1>
@@ -45,7 +42,7 @@ export function HomePage({ onNavigate, onModeSelect, state }) {
           transition={{ delay: 0.2 }}
           className="text-xl text-stadium-400 max-w-xl mx-auto"
         >
-          Test your football knowledge! Guess legendary and modern stars through clues, transfers, and more.
+          Test your football knowledge! Guess legendary and modern stars through clues, transfers, and career paths.
         </motion.p>
       </div>
 
@@ -58,19 +55,18 @@ export function HomePage({ onNavigate, onModeSelect, state }) {
           <span className="text-gold-400">★</span>
           Daily Challenge
         </h2>
-        <div className="glass-card rounded-xl p-4 border-gold-500/30 box-glow-gold">
-          <div className="flex items-center gap-4">
-            <span className="text-4xl">{dailyPlayer.flag}</span>
-            <div className="flex-1">
-              <p className="text-stadium-400 text-sm">Today's Player</p>
-              <p className="text-white font-bold text-lg">{dailyPlayer.name}</p>
-              <p className="text-stadium-500 text-sm">{dailyPlayer.daily_hint}</p>
+        <div className="glass-card rounded-xl p-6 border-gold-500/30 box-glow-gold bg-stadium-900/40">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <span className="text-5xl">{dailyPlayer.flag}</span>
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-stadium-400 text-sm">Today's Player Clue</p>
+              <p className="text-white font-bold text-lg mt-1">{dailyPlayer.daily_hint}</p>
             </div>
             <button
-              onClick={() => handleModeSelect({ page: 'classic' })}
-              className="px-4 py-2 bg-gold-500 text-black font-bold rounded-lg hover:bg-gold-400 transition-all"
+              onClick={() => handleModeSelect({ page: 'daily' })}
+              className="px-6 py-3 bg-gold-500 text-black font-bold rounded-xl hover:bg-gold-400 transition-all shadow-lg hover:shadow-gold-500/20"
             >
-              Play
+              Play Daily Challenge
             </button>
           </div>
         </div>

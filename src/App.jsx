@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useCallback, useEffect } from 'react';
+import { HashRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Header } from './components/Header';
 import { HomePage } from './pages/HomePage';
 import { StatsPage } from './pages/StatsPage';
 import { EncyclopediaPage } from './pages/EncyclopediaPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { HistoryPage } from './pages/HistoryPage';
 import { ClassicMode } from './pages/ClassicMode';
 import { MultipleChoiceMode } from './pages/MultipleChoiceMode';
 import { CareerPathMode } from './pages/CareerPathMode';
@@ -12,24 +14,24 @@ import { SpeedMode } from './pages/SpeedMode';
 import { useGameState } from './hooks/useGameState';
 import PLAYERS from './data/players';
 
-function App() {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [currentMode, setCurrentMode] = useState(null);
-  const [currentPlayer, setCurrentPlayer] = useState(null);
+// Wrapper to handle navigation and state passing
+function AppContent() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { state, recordGame } = useGameState();
+  const [currentPlayer, setCurrentPlayer] = useState(null);
 
-  const handleNavigate = useCallback((page, player = null) => {
-    setCurrentPage(page);
-    if (player) setCurrentPlayer(player);
-  }, []);
+  // Initialize a player if needed for modes
+  useEffect(() => {
+    if (!currentPlayer && (location.pathname.includes('/play/') || location.pathname === '/play')) {
+      const randomPlayer = PLAYERS[Math.floor(Math.random() * PLAYERS.length)];
+      setCurrentPlayer(randomPlayer);
+    }
+  }, [location.pathname, currentPlayer]);
 
-  const handleModeSelect = useCallback((mode) => {
-    setCurrentMode(mode);
-  }, []);
-
-  const handleResult = useCallback((won, score, cluesUsed) => {
-    recordGame(won, score, cluesUsed);
-  }, [recordGame]);
+  const handleResult = useCallback((won, score, cluesUsed, mode) => {
+    recordGame(won, score, cluesUsed, mode, currentPlayer?.id);
+  }, [recordGame, currentPlayer]);
 
   const handlePlayAgain = useCallback(() => {
     const randomPlayer = PLAYERS[Math.floor(Math.random() * PLAYERS.length)];
@@ -37,74 +39,66 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <div className="min-h-screen bg-stadium-950 text-white">
-        <div className="fixed inset-0 pitch-grid pointer-events-none" />
+    <div className="min-h-screen bg-stadium-950 text-white">
+      <div className="fixed inset-0 pitch-grid pointer-events-none opacity-20" />
+      
+      <div className="relative z-10">
+        <Header />
         
-        <div className="relative z-10">
-          <Header onNavigate={handleNavigate} currentPage={currentPage} />
-          
-          <main className="max-w-6xl mx-auto px-4 py-8">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`${currentPage}-${currentMode?.id}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.2 }}
-              >
-                {currentPage === 'home' && (
-                  <HomePage
-                    onNavigate={handleNavigate}
-                    onModeSelect={handleModeSelect}
-                    state={state}
-                  />
-                )}
-                
-                {currentPage === 'stats' && (
-                  <StatsPage state={state} onNavigate={handleNavigate} />
-                )}
-                
-                {currentPage === 'encyclopedia' && (
-                  <EncyclopediaPage onNavigate={handleNavigate} />
-                )}
-                
-                {currentPage === 'classic' && currentPlayer && (
-                  <ClassicMode
-                    player={currentPlayer}
-                    onResult={handleResult}
-                    onPlayAgain={handlePlayAgain}
-                  />
-                )}
-                
-                {currentPage === 'multiple-choice' && currentPlayer && (
-                  <MultipleChoiceMode
-                    player={currentPlayer}
-                    onResult={handleResult}
-                    onPlayAgain={handlePlayAgain}
-                  />
-                )}
-                
-                {currentPage === 'career-path' && currentPlayer && (
-                  <CareerPathMode
-                    player={currentPlayer}
-                    onResult={handleResult}
-                    onPlayAgain={handlePlayAgain}
-                  />
-                )}
-                
-                {currentPage === 'speed' && currentMode && (
-                  <SpeedMode
-                    players={PLAYERS.slice(0, 5)}
-                    onResult={handleResult}
-                    onPlayAgain={handlePlayAgain}
-                  />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </main>
-        </div>
+        <main className="max-w-6xl mx-auto px-4 py-8">
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<HomePage state={state} />} />
+              <Route path="/stats" element={<StatsPage state={state} />} />
+              <Route path="/history" element={<HistoryPage state={state} />} />
+              <Route path="/encyclopedia" element={<EncyclopediaPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              
+              <Route path="/play/classic" element={
+                currentPlayer && <ClassicMode 
+                  player={currentPlayer} 
+                  onResult={(won, s, c) => handleResult(won, s, c, 'classic')} 
+                  onPlayAgain={handlePlayAgain} 
+                />
+              } />
+              
+              <Route path="/play/multiple-choice" element={
+                currentPlayer && <MultipleChoiceMode 
+                  player={currentPlayer} 
+                  onResult={(won, s, c) => handleResult(won, s, c, 'multiple-choice')} 
+                  onPlayAgain={handlePlayAgain} 
+                />
+              } />
+              
+              <Route path="/play/career-path" element={
+                currentPlayer && <CareerPathMode 
+                  player={currentPlayer} 
+                  onResult={(won, s, c) => handleResult(won, s, c, 'career-path')} 
+                  onPlayAgain={handlePlayAgain} 
+                />
+              } />
+              
+              <Route path="/play/speed" element={
+                <SpeedMode 
+                  players={PLAYERS.sort(() => 0.5 - Math.random()).slice(0, 10)} 
+                  onResult={(won, s, c) => handleResult(won, s, c, 'speed')} 
+                  onPlayAgain={handlePlayAgain} 
+                />
+              } />
+
+              <Route path="*" element={<HomePage state={state} />} />
+            </Routes>
+          </AnimatePresence>
+        </main>
       </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

@@ -1,8 +1,17 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X } from 'lucide-react';
-import { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import { Check, X, HelpCircle } from 'lucide-react';
+import { useState, useCallback, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { triggerConfetti } from '../utils/confetti';
 import { soundEffects } from '../utils/audio';
+import { ModeInstructions } from '../components/ClueReveal';
+
+const MULTIPLE_CHOICE_STEPS = [
+  'Read the clues carefully.',
+  'Pick the correct player from 4 options.',
+  'Correct = +500 points. Wrong = +0.',
+  'No second chances — choose wisely!',
+];
 
 export function MultipleChoiceMode({ player, onResult, onPlayAgain }) {
   const [selected, setSelected] = useState(null);
@@ -10,7 +19,10 @@ export function MultipleChoiceMode({ player, onResult, onPlayAgain }) {
   const [score, setScore] = useState(0);
 
   const distractors = player?.distractors || [];
-  const options = [player?.name, ...distractors].sort(() => Math.random() - 0.5);
+  const options = useMemo(
+    () => [player?.name, ...distractors].filter(Boolean).sort(() => Math.random() - 0.5),
+    [player?.name, distractors.join('|')]
+  );
 
   const handleSelect = useCallback((option) => {
     if (selected !== null) return;
@@ -38,13 +50,23 @@ export function MultipleChoiceMode({ player, onResult, onPlayAgain }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-2xl font-display font-bold text-white mb-2">Multiple Choice</h1>
-        <p className="text-stadium-400">Select the correct player!</p>
-      </div>
+    <div className="max-w-6xl mx-auto">
+      <div className="flex gap-8">
+        <ModeInstructions title="How to Play" steps={MULTIPLE_CHOICE_STEPS} />
 
-      <div className="glass-card rounded-xl p-6 mb-6 border-pitch-500/30">
+        <div className="flex-1">
+          <div className="mb-6">
+            <Link
+              to="/"
+              className="text-stadium-400 hover:text-white transition-colors mb-2 inline-flex items-center gap-2"
+            >
+              ← Back
+            </Link>
+            <h1 className="text-2xl font-display font-bold text-white mb-2">Multiple Choice</h1>
+            <p className="text-stadium-400">Select the correct player!</p>
+          </div>
+
+          <div className="glass-card rounded-xl p-6 mb-6 border-pitch-500/30">
         <div className="text-center mb-4">
           <span className="text-6xl mb-4 block">{player?.flag}</span>
           <h2 className="text-xl font-bold text-white">Who is this player?</h2>
@@ -119,6 +141,8 @@ export function MultipleChoiceMode({ player, onResult, onPlayAgain }) {
           </motion.button>
         </motion.div>
       )}
+        </div>
+      </div>
     </div>
   );
 }

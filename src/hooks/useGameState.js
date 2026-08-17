@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 const STORAGE_KEY = 'guess_football_player';
 
@@ -9,6 +9,7 @@ const defaultState = {
   streak: 0,
   bestStreak: 0,
   achievements: [],
+  history: [],
   settings: {
     soundEnabled: true,
     cluesRevealed: 3,
@@ -16,53 +17,67 @@ const defaultState = {
   },
 };
 
-export function useGameState() {
-  const [state, setState] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? { ...defaultState, ...JSON.parse(saved) } : defaultState;
-    } catch {
-      return defaultState;
-    }
-  });
-
-  const save = useCallback((newState) => {
-    const toSave = {
-      ...newState,
-      achievements: newState.achievements || [],
-      settings: newState.settings || defaultState.settings,
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return defaultState;
+    const parsed = JSON.parse(saved);
+    return {
+      ...defaultState,
+      ...parsed,
+      achievements: parsed.achievements || [],
+      history: parsed.history || [],
+      settings: { ...defaultState.settings, ...(parsed.settings || {}) },
     };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-    setState(toSave);
-  }, []);
+  } catch {
+    return defaultState;
+  }
+}
 
-  const recordGame = useCallback((won, score, cluesUsed) => {
-    setState(prev => {
+export function useGameState() {
+  const [state, setState] = useState(loadState);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+      console.error('Failed to save game state:', error);
+    }
+  }, [state]);
+
+  const recordGame = useCallback((won, score, cluesUsed, mode = 'classic', playerId = null) => {
+    setState((prev) => {
       const newStreak = won ? prev.streak + 1 : 0;
-      const newBestStreak = Math.max(newStreak, prev.bestStreak);
-      const newGamesPlayed = prev.gamesPlayed + 1;
-      const newGamesWon = won ? prev.gamesWon + 1 : prev.gamesWon;
-      const newTotalScore = prev.totalScore + score;
+      const entry = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        date: new Date().toISOString(),
+        won: Boolean(won),
+        score: Number(score) || 0,
+        cluesUsed: Number(cluesUsed) || 0,
+        mode,
+        playerId,
+      };
       return {
         ...prev,
-        gamesPlayed: newGamesPlayed,
-        gamesWon: newGamesWon,
-        totalScore: newTotalScore,
+        gamesPlayed: prev.gamesPlayed + 1,
+        gamesWon: won ? prev.gamesWon + 1 : prev.gamesWon,
+        totalScore: prev.totalScore + (Number(score) || 0),
         streak: newStreak,
-        bestStreak: newBestStreak,
+        bestStreak: Math.max(newStreak, prev.bestStreak),
+        history: [entry, ...(prev.history || [])].slice(0, 50),
       };
     });
   }, []);
 
   const addAchievement = useCallback((achievementId) => {
-    setState(prev => {
+    setState((prev) => {
       if (prev.achievements.includes(achievementId)) return prev;
       return { ...prev, achievements: [...prev.achievements, achievementId] };
     });
   }, []);
 
   const updateSettings = useCallback((settings) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       settings: { ...prev.settings, ...settings },
     }));
