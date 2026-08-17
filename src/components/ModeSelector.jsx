@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Play, Brain, GitBranch, Calendar, Zap, ArrowRight } from 'lucide-react';
+import { Play, Brain, GitBranch, Calendar, ArrowRight } from 'lucide-react';
 
 export const GAME_MODES = [
   {
@@ -31,13 +31,6 @@ export const GAME_MODES = [
     page: 'daily',
     featured: true,
   },
-  {
-    id: 'speed',
-    title: 'Speed Round',
-    description: 'Guess as fast as you can. How many can you get right?',
-    icon: <Zap size={24} className="text-electric-lime" />,
-    page: 'speed',
-  },
 ];
 
 export function ModeSelector({ onModeSelect, className = '' }) {
@@ -63,16 +56,16 @@ export function ModeSelector({ onModeSelect, className = '' }) {
               NEW
             </div>
           )}
-          
+
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
             mode.featured ? 'bg-gold-500/20' : 'bg-pitch-500/10'
           }`}>
             {mode.icon}
           </div>
-          
+
           <h3 className="text-lg font-bold text-white mb-1">{mode.title}</h3>
           <p className="text-sm text-stadium-400 mb-3">{mode.description}</p>
-          
+
           <div className="flex items-center text-sm font-medium text-pitch-400">
             <span>Play Now</span>
             <ArrowRight size={14} className="ml-1" />

@@ -541,51 +541,6 @@ const PLAYERS = [
     distractors: ['Ivan Rakitic', 'Mateo Kovacic', 'Marcelo Brozovic'],
   },
   {
-    id: 'neymar',
-    name: 'Neymar Jr',
-    full_name: 'Neymar da Silva Santos Júnior',
-    nationality: 'Brazil',
-    flag: '🇧🇷',
-    position: 'LW',
-    positions: ['LW', 'CF', 'RW'],
-    current_club: 'Al Hilal',
-    former_clubs: ['Santos', 'FC Barcelona', 'Paris Saint-Germain'],
-    former_clubs_detailed: ['Santos Youth', 'Santos (2009-2013)', 'FC Barcelona (2013-2017)', 'Paris Saint-Germain (2017-2023)', 'Al Hilal (2023-)'],
-    birth_date: '1992-02-05',
-    birth_place: 'Mogi das Cruzes, Brazil',
-    height: '175 cm',
-    weight: '68 kg',
-    preferred_foot: 'Right',
-    jersey_number: 10,
-    world_ranking: 15,
-    is_active: true,
-    is_retired: false,
-    is_legend: true,
-    goals_scored: 436,
-    assists_provided: 265,
-    appearances: 667,
-    trophies_count: 28,
-    ballon_dor: 0,
-    clues: [
-      { id: 1, type: 'nationality', value: 'Brazil', icon: '🇧🇷' },
-      { id: 2, type: 'position', value: 'Left Winger', icon: '⚽' },
-      { id: 3, type: 'current_club', value: 'Al Hilal (Saudi Arabia)', icon: '🏟️' },
-      { id: 4, type: 'former_club', value: 'FC Barcelona', icon: '🏟️' },
-      { id: 5, type: 'trophy', value: '2015 UEFA Champions League Winner', icon: '🏆', points: 400 },
-      { id: 6, type: 'unique', value: 'Part of MSN trio with Messi and Suarez', icon: '🌟', points: 300 },
-      { id: 7, type: 'stat', value: '436 career goals', icon: '⚽', points: 200 },
-      { id: 8, type: 'unique', value: 'Most expensive transfer ever (2017)', icon: '💰', points: 250 },
-      { id: 9, type: 'trophy', value: '2013 FIFA Confederations Cup Winner', icon: '🏆', points: 200 },
-      { id: 10, type: 'unique', value: 'Known for flair and samba style', icon: '✨', points: 150 },
-    ],
-    career_path: ['Santos', 'FC Barcelona', 'Paris Saint-Germain', 'Al Hilal'],
-    major_honors: ['UEFA Champions League 2015', 'Copa America 2019', 'Olympic Gold 2016', 'La Liga x2', 'Ligue 1 x5'],
-    all_time_records: ['Most expensive player ever (222M)'],
-    is_daily: false,
-    daily_hint: 'The flair maestro from Brazil.',
-    distractors: ['Rodrygo', 'Philippe Coutinho', 'Vinicius Jr'],
-  },
-  {
     id: 'beckham',
     name: 'David Beckham',
     full_name: 'David Robert Joseph Beckham',
@@ -720,7 +675,6 @@ const PLAYERS = [
     daily_hint: 'The towering Dutch defender.',
     distractors: ['Matthijs de Ligt', 'William Saliba', 'Ruben Dias']
   },
-
   {
     id: 'courtois',
     name: 'Thibaut Courtois',
@@ -766,7 +720,6 @@ const PLAYERS = [
     daily_hint: 'A giant Belgian wall between the posts.',
     distractors: ['Alisson', 'Ederson', 'Manuel Neuer']
   },
-
   {
     id: 'alisson',
     name: 'Alisson Becker',
@@ -812,7 +765,6 @@ const PLAYERS = [
     daily_hint: 'The Brazilian keeper with a famous headed goal.',
     distractors: ['Ederson', 'Courtois', 'Emiliano Martinez']
   },
-
   {
     id: 'rodri',
     name: 'Rodri',
@@ -858,7 +810,6 @@ const PLAYERS = [
     daily_hint: 'The midfield controller who won the Ballon dOr.',
     distractors: ['Busquets', 'Casemiro', 'Declan Rice']
   },
-
   {
     id: 'ramos',
     name: 'Sergio Ramos',
@@ -904,7 +855,6 @@ const PLAYERS = [
     daily_hint: 'The legendary centre-back with a taste for late goals.',
     distractors: ['Pepe', 'Pique', 'Varane']
   },
-
   {
     id: 'iniesta',
     name: 'Andres Iniesta',
@@ -950,7 +900,6 @@ const PLAYERS = [
     daily_hint: 'The quiet genius who scored Spains biggest goal.',
     distractors: ['Xavi', 'David Silva', 'Modric']
   },
-
   {
     id: 'xavi',
     name: 'Xavi',
@@ -996,7 +945,6 @@ const PLAYERS = [
     daily_hint: 'The passing metronome behind tiki-taka.',
     distractors: ['Iniesta', 'Busquets', 'Pirlo']
   },
-
   {
     id: 'suarez',
     name: 'Luis Suárez',
@@ -1042,7 +990,6 @@ const PLAYERS = [
     daily_hint: 'The biting, brilliant striker from Uruguay.',
     distractors: ['Cavani', 'Benzema', 'Lewandowski']
   },
-
   {
     id: 'ronaldinho',
     name: 'Ronaldinho',
@@ -1088,7 +1035,6 @@ const PLAYERS = [
     daily_hint: 'Football genius, tricks, smiles and samba.',
     distractors: ['Neymar', 'Ronaldo Nazario', 'Kaka']
   },
-
   {
     id: 'henry',
     name: 'Thierry Henry',
@@ -1134,7 +1080,6 @@ const PLAYERS = [
     daily_hint: 'The King of Highbury.',
     distractors: ['Bergkamp', 'Trezeguet', 'Zidane']
   },
-
   {
     id: 'kaka',
     name: 'Kaka',
@@ -1180,7 +1125,6 @@ const PLAYERS = [
     daily_hint: 'The elegant Brazilian playmaker who won the 2007 Ballon dOr.',
     distractors: ['Ronaldinho', 'Rivaldo', 'Ronaldo Nazario']
   },
-
   {
     id: 'buffon',
     name: 'Gianluigi Buffon',
@@ -1226,7 +1170,6 @@ const PLAYERS = [
     daily_hint: 'An Italian goalkeeper legend with a World Cup medal.',
     distractors: ['Casillas', 'Neuer', 'Donnarumma']
   },
-
   {
     id: 'casillas',
     name: 'Iker Casillas',
@@ -1272,7 +1215,6 @@ const PLAYERS = [
     daily_hint: 'Saint Iker, captain of Spains golden generation.',
     distractors: ['Buffon', 'Neuer', 'Courtois']
   },
-
   {
     id: 'neuer',
     name: 'Manuel Neuer',
@@ -1318,7 +1260,6 @@ const PLAYERS = [
     daily_hint: 'The sweeper-keeper who changed the position.',
     distractors: ['Buffon', 'Casillas', 'Ter Stegen']
   },
-
   {
     id: 'kroos',
     name: 'Toni Kroos',

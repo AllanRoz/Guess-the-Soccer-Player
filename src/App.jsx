@@ -10,7 +10,6 @@ import { HistoryPage } from './pages/HistoryPage';
 import { ClassicMode } from './pages/ClassicMode';
 import { MultipleChoiceMode } from './pages/MultipleChoiceMode';
 import { CareerPathMode } from './pages/CareerPathMode';
-import { SpeedMode } from './pages/SpeedMode';
 import { useGameState } from './hooks/useGameState';
 import PLAYERS from './data/players';
 
@@ -74,14 +73,6 @@ function AppContent() {
                 currentPlayer && <CareerPathMode 
                   player={currentPlayer} 
                   onResult={(won, s, c) => handleResult(won, s, c, 'career-path')} 
-                  onPlayAgain={handlePlayAgain} 
-                />
-              } />
-              
-              <Route path="/play/speed" element={
-                <SpeedMode 
-                  players={PLAYERS.sort(() => 0.5 - Math.random()).slice(0, 10)} 
-                  onResult={(won, s, c) => handleResult(won, s, c, 'speed')} 
                   onPlayAgain={handlePlayAgain} 
                 />
               } />
